@@ -25,4 +25,9 @@ class Product extends Model
     {
         return $value ?: 'images/default_background.jpg';
     }
+
+    public function getPriceAttribute($value)
+    {
+        return sprintf("%.2f", $value);
+    }
 }
