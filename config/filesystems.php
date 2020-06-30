@@ -65,6 +65,20 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'qiniu' => [
+            'driver' => 'qiniu',
+            'domains' => [
+                'default' => 'qcokae8dk.bkt.clouddn.com',
+                'https' => '',
+                'custom' => '',
+            ],
+            'access_key' => 'L9kcejUAUvYg4K_2nDD9gmNjJ-YzF-m6lhyvU77Q',
+            'secret_key' => 'pCkGQKhMIzgMBY2EyPk9q32Vn-lTLsYytBxZq6N6',
+            'bucket' => 'waivefee',
+            'notify_url' => '',
+            'url' => 'http://qcokae8dk.bkt.clouddn.com/',
+        ],
+
     ],
 
     /*
