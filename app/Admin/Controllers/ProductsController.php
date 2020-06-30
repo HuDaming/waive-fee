@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Grid\CreateVoucherQrCode;
 use App\Admin\Repositories\Products;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
@@ -33,6 +34,10 @@ class ProductsController extends AdminController
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
 
+            });
+
+            $grid->actions(function (Grid\Displayers\Actions $actions) {
+                $actions->append(new CreateVoucherQrCode());
             });
         });
     }
