@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'alipay' => [
+        'app_id' => env('ALIPAY_APP_ID'),
+        'base_uri' => env('ALIPAY_URI'),
+        'alipay_public_key' => env('ALIPAY_PUBLIC_KEY'),
+        'app_private_key' => env('APP_PRIVATE_KEY'),
+    ],
 ];
