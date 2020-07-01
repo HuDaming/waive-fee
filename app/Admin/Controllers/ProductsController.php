@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Grid\CreateVoucherQrCode;
 use App\Admin\Repositories\Products;
+use App\Models\Product;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -75,16 +76,57 @@ class ProductsController extends AdminController
         return Form::make(new Products(), function (Form $form) {
             $form->display('id');
 
-            $form->text('name')
-                ->creationRules('required|unique:products,name')
-                ->updateRules('required|unique:products,name,{{id}}');
+            $form->row(function (Form\Row $form) {
+                $form->radio('code')->options(Product::$codeMap);
+            });
 
-            $form->textarea('intro');
+            $form->row(function (Form\Row $form) {
+                $form->width(3)->text('name')
+                    ->creationRules('required|unique:products,name')
+                    ->updateRules('required|unique:products,name,{{id}}');
 
-            $form->image('banner_img')->uniqueName()->rules('mimes:jpeg,bmp,png|max:2024');
-            $form->image('background_img')->uniqueName()->rules('mimes:jpeg,bmp,png|max:2024');
-            $form->currency('price')->symbol('¥')->rules('required|numeric|min:0');
-            $form->switch('on_sale')->options([0, 1])->default(1)->green();
+                $form->width(10)->textarea('intro');
+            });
+
+            $form->row(function (Form\Row $form) {
+                $form->width(5)
+                    ->image('banner_img')
+                    ->uniqueName()
+                    ->help('')
+                    ->rules('mimes:jpeg,bmp,png|max:2024');
+                $form->width(5)
+                    ->image('background_img')
+                    ->uniqueName()
+                    ->help('防止变形请使用尺寸为 540*1082，2M以内的图片作为二维码背景图')
+                    ->rules('mimes:jpeg,bmp,png|max:2024');
+            });
+
+            $form->row(function (Form\Row $form) {
+                $form->width(3)
+                    ->currency('price')
+                    ->symbol('¥')
+                    ->rules('required|numeric|min:0');
+                $form->width(3)
+                    ->select('trans_currency')
+                    ->options(Product::$transCurrencyMap)
+                    ->help('默认人民币');
+                $form->width(3)
+                    ->select('settle_currency')
+                    ->options(Product::$transCurrencyMap)
+                    ->help('默认人民币');
+            });
+
+            $form->row(function (Form\Row $form) {
+                $form->width(2)
+                    ->select('pay_timeout')
+                    ->options(Product::getPayTimeoutDays())
+                    ->help('支付宝限制 15 天')
+                    ->rules('integer|min:1|max:15');
+            });
+
+            $form->row(function (Form\Row $form) {
+                $form->width(2)->switch('on_sale')->options([0, 1])->default(1)->green();
+            });
 
             $form->display('created_at');
             $form->display('updated_at');
