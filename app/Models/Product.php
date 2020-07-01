@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AuthorizationCodeOrder;
 use Dcat\Admin\Models\Administrator;
 use Dcat\Admin\Traits\HasDateTimeFormatter;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ use Illuminate\Support\Str;
  * @property string|null $trans_currency 标价币种
  * @property string|null $settle_currency 结算币种
  * @property int $pay_timeout 最晚履约时间
- * @property string $enable_pay_channels 可用支付渠道
+ * @property array $enable_pay_channels 可用支付渠道
  * @property bool $on_sale 是否上架
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -118,7 +119,7 @@ class Product extends Model
 
     protected $casts = [
         'on_sale' => 'boolean',
-        'enable_pay_channel' => 'json',
+        'enable_pay_channels' => 'array',
     ];
 
     public function getFullBackgroundImgUrlAttribute()
@@ -153,6 +154,12 @@ class Product extends Model
         return $this->belongsToMany(Administrator::class, 'product_user', 'product_id', 'user_id')
             ->withPivot('qr_code')
             ->withTimestamps();
+    }
+
+    // 关联的授权码订单
+    public function authorizationCodeOrders()
+    {
+        return $this->hasMany(AuthorizationCodeOrder::class);
     }
 
     public static function getPayTimeoutDays()

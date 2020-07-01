@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions\Grid;
 
+use App\Models\AuthorizationCodeOrder;
 use Dcat\Admin\Admin;
 use Image;
 use App\Models\Product;
@@ -93,38 +94,63 @@ HTML;
 
     protected function getAlipayQrCode(Product $product)
     {
-        $channels = json_encode([
-            ['payChannelType' => 'PCREDIT_PAY'],
-            ['payChannelType' => 'MONEY_FUND'],
-        ], true);
-        $extraParam = json_encode(['category' => 'HOME'], true);
-        $identityParams = json_encode([
-            'identity_hash' => 'ABCDEFDxxxxxx',
-            'alipay_user_id' => '2088xxx'
-        ], true);
+        $orderNo = AuthorizationCodeOrder::findAvailableOrderNo();
+        $requestNo = AuthorizationCodeOrder::findAvailableRequestNo();
+
         $query = [
-            'out_order_no' => '8077735255938026',
-            'out_request_no' => '8077735255938037',
-            'order_title' => '预授权发码',
-            'amount' => 100.00,
-            'payee_user_id' => '2088102181099210',
-            // 'payee_logon_id' => '159****5620',
-            'pay_timeout' => '2d',
-            'extra_param' => $extraParam,
-            'product_code' => 'PRE_AUTH',
-            'trans_currency' => 'USD',
-            'settle_currency' => 'USD',
-            'enable_pay_channels' => $channels,
-            'identity_params' => $identityParams
+            'out_order_no' => $orderNo,
+            'out_request_no' => $requestNo,
+            'order_title' => $product->name . '预授权发码',
+            'amount' => $product->price,
+            'payee_user_id' => config('services.alipay.merchant_id'),
+            'product_code' => $product->code,
+            'enable_pay_channels' => $this->getChannelsJson($product->enable_pay_channels),
+            'pay_timeout' => $product->pay_timeout . 'd',
+            'extra_param' => json_encode(['category' => 'HOME', 'requestOrgId' => Admin::user()->id], true),
+            //'identity_params' => json_encode(['identity_hash' => 'ABCDEFDxxxxxx', 'alipay_user_id' => '2088xxx'], true)
         ];
 
-        $response = app('alipay')->qrCode($query);
-        if ($response->code == 10000)
-            return $response->code_url;
+        if ($product->trans_currency) $query['trans_currency'] = $product->trans_currency;
+        if ($product->settle_currency) $query['settle_currency'] = $product->settle_currency;
 
-        return false;
+        if (config('services.alipay.logon_id')) {
+            $query['payee_logon_id'] = config('services.alipay.logon_id');
+        }
+
+        $response = app('alipay')->qrCode($query);
+        if ($response->code == 10000) {
+            // 写本地授权码订单记录
+            $product->authorizationCodeOrders()->create([
+                'order_no' => $orderNo,
+                'request_no' => $requestNo,
+                'extra' => json_encode($query, true),
+                'price' => $product->price,
+                'user_id' => Admin::user()->id,
+                'status' => true
+            ]);
+
+            return $response->code_url;
+        } else {
+            // 写本地授权码订单记录
+            $product->authorizationCodeOrders()->create([
+                'order_no' => $orderNo,
+                'request_no' => $requestNo,
+                'price' => $product->price,
+                'user_id' => Admin::user()->id,
+                'status' => false
+            ]);
+
+            return false;
+        }
     }
 
+    /**
+     * 合成二维码图片
+     *
+     * @param $qrCodeImg
+     * @param $backgroundImg
+     * @return \Psr\Http\Message\StreamInterface
+     */
     protected function mergeImage($qrCodeImg, $backgroundImg)
     {
         // 合成图片
@@ -137,5 +163,21 @@ HTML;
             );
 
         return $image->stream('jpg');
+    }
+
+    /**
+     * 拼接支付渠道
+     *
+     * @param array $channels
+     * @return false|string
+     */
+    protected function getChannelsJson(array $channels = [])
+    {
+        $arr = [];
+        foreach ($channels as $channel) {
+            $arr[] = ['payChannelType' => $channel];
+        }
+
+        return json_encode($arr, true);
     }
 }

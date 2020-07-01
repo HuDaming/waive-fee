@@ -85,7 +85,7 @@ class ProductsController extends AdminController
                     ->creationRules('required|unique:products,name')
                     ->updateRules('required|unique:products,name,{{id}}');
 
-                $form->width(10)->textarea('intro');
+                $form->width(7)->textarea('intro');
             });
 
             $form->row(function (Form\Row $form) {
@@ -114,6 +114,7 @@ class ProductsController extends AdminController
                     ->select('settle_currency')
                     ->options(Product::$transCurrencyMap)
                     ->help('默认人民币');
+                $form->width(10)->multipleSelect('enable_pay_channels')->options(Product::$channelMap);
             });
 
             $form->row(function (Form\Row $form) {
