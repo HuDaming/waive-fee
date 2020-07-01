@@ -20,16 +20,17 @@ class ProductsController extends AdminController
      */
     protected function grid()
     {
-        return Grid::make(new Products(), function (Grid $grid) {
+        return Grid::make(new Products('users'), function (Grid $grid) {
             $grid->id->sortable();
             $grid->name;
             $grid->intro;
             $grid->banner_img->image();
             $grid->background_img->image();
+            $grid->users('授权二维码')->where('id', \Admin::user()->id)->pluck('pivot.qr_code')->image();
             $grid->price;
             $grid->on_sale->switch('green');
             $grid->created_at;
-            $grid->updated_at->sortable();
+            // $grid->updated_at->sortable();
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->equal('id');
