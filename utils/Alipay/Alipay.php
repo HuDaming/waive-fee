@@ -2,7 +2,12 @@
 
 namespace Utils\Alipay;
 
+use App\Models\User;
+
 require_once "alipay-sdk/aop/AopClient.php";
+require_once "alipay-sdk/aop/request/AlipayUserInfoShareRequest.php";
+require_once "alipay-sdk/aop/request/AlipaySystemOauthTokenRequest.php";
+require_once "alipay-sdk/aop/request/AlipayFundAuthOrderAppFreezeRequest.php";
 require_once "alipay-sdk/aop/request/AlipayFundAuthOrderVoucherCreateRequest.php";
 
 class Alipay implements AlipayContract
@@ -25,6 +30,49 @@ class Alipay implements AlipayContract
         $this->appPrivateKey = $config['app_private_key'];
 
         $this->aop = $this->getAop();
+    }
+
+    /**
+     * 获取 Access token
+     *
+     * @param $code
+     * @return \SimpleXMLElement
+     * @throws \Exception
+     */
+    public function getAccessToken($code)
+    {
+        $request = new \AlipaySystemOauthTokenRequest();
+        $request->setGrantType("authorization_code");
+        $request->setCode($code);
+        $result = $this->aop->execute($request);
+
+        return $result->alipay_system_oauth_token_response;
+    }
+
+    /**
+     * 获取用户数据
+     *
+     * @param $accessToken
+     * @return \SimpleXMLElement
+     * @throws \Exception
+     */
+    public function getUserInfo($accessToken)
+    {
+        $request = new \AlipayUserInfoShareRequest();
+        $result = $this->aop->execute($request, $accessToken);
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+
+        return $result->$responseNode;
+    }
+
+    public function authorizedFundsFreezeOrder(array $query)
+    {
+        $request = new \AlipayFundAuthOrderAppFreezeRequest();
+        $request->setBizContent(json_encode($query, true));
+        $result = $this->aop->execute($request);
+
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+        return $result->$responseNode;
     }
 
     public function qrCode(array $query = [])

@@ -52,6 +52,8 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Product withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AuthorizationCodeOrder[] $authorizationCodeOrders
+ * @property-read int|null $authorization_code_orders_count
  */
 class Product extends Model
 {

@@ -31,10 +31,32 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @property string|null $open_id
+ * @property string|null $avatar
+ * @property string|null $nickname
+ * @property string|null $province
+ * @property string|null $city
+ * @property int $gender
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereOpenId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereProvince($value)
  */
 class User extends Authenticatable
 {
     use Notifiable;
+
+    const GENDER_SECRET = 0;
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+
+    public static $genderMap = [
+        self::GENDER_SECRET => '保密',
+        self::GENDER_MALE => '男',
+        self::GENDER_FEMALE => '女',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -42,7 +64,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'open_id', 'name', 'avatar', 'nickname', 'email', 'password', 'province', 'city', 'gender'
     ];
 
     /**

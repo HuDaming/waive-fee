@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PagesController@index')->name('root');
+Route::get('orders/create', 'OrdersController@create')->name('orders.create');
