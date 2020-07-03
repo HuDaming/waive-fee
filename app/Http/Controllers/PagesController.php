@@ -51,6 +51,10 @@ class PagesController extends Controller
         }
 
         // 跳转至支付页面
-        return redirect()->route('orders.create', ['user_id' => $user->id, 'product_id' => 1]);
+        return redirect()->route('orders.create', [
+            'user_id' => $user->id,
+            'product_id' => 1,
+            'seller_id' => 2,
+        ]);
     }
 }

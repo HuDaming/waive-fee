@@ -21,15 +21,6 @@ class Order extends Model
 {
     use SoftDeletes, HasDateTimeFormatter;
 
-    protected static $prefix;
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        self::$prefix = date("YmdHis");
-    }
-
     // 销售产品码
     const CODE_PRE_AUTH = 'PRE_AUTH_ONLINE';
     const CODE_OVERSEAS = 'OVERSEAS_INSTORE_AUTH';
@@ -96,8 +87,11 @@ class Order extends Model
         self::STATUS_DEFAULT => '已违约',
     ];
 
-    public $fillable = [
-        'order_no', 'request_no', 'order_title', 'amount', 'product_code', 'payee_logon_id', 'payee_user_id', 'pay_timeout', 'scene_code', 'trans_currency', 'settle_currency', 'enable_pay_channels', 'identity_params', 'status', 'user_id', 'seller_id', 'product_id'
+    protected $fillable = [
+        'order_no', 'request_no',
+        'order_title', 'amount', 'product_code', 'payee_logon_id', 'payee_user_id', 'pay_timeout', 'scene_code', 'trans_currency', 'settle_currency', 'enable_pay_channels', 'identity_params',
+        'contact_name', 'contact_mobile', 'address', 'remark',
+        'status', 'user_id', 'seller_id', 'product_id'
     ];
 
     /**
@@ -108,8 +102,9 @@ class Order extends Model
      */
     public static function findAvailableOrderNo()
     {
+        $prefix = date("YmdHis");
         for ($i = 0; $i < 10; $i++) {
-            $no = self::$prefix . str_pad(random_int(0, 999999), 6, 0, STR_PAD_LEFT);
+            $no = $prefix . str_pad(random_int(0, 999999), 6, 0, STR_PAD_LEFT);
             if (!static::query()->where('order_no', $no)->exists()) {
                 return $no;
             }
@@ -127,8 +122,9 @@ class Order extends Model
      */
     public static function findAvailableRequestNo()
     {
+        $prefix = date("YmdHis");
         for ($i = 0; $i < 10; $i++) {
-            $no = self::$prefix . str_pad(random_int(0, 999999), 6, 0, STR_PAD_LEFT);
+            $no = $prefix . str_pad(random_int(0, 999999), 6, 0, STR_PAD_LEFT);
             if (!static::query()->where('request_no', $no)->exists()) {
                 return $no;
             }
