@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'PagesController@index')->name('root');
+
+Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::get('orders/create', 'OrdersController@create')->name('orders.create');
+    Route::post('orders', 'OrdersController@store')->name('orders.store');
 });
+

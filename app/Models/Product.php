@@ -27,6 +27,8 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AuthorizationCodeOrder[] $authorizationCodeOrders
+ * @property-read int|null $authorization_code_orders_count
  * @property-read mixed $full_background_img_url
  * @property-read \Illuminate\Database\Eloquent\Collection|\Dcat\Admin\Models\Administrator[] $users
  * @property-read int|null $users_count

@@ -36,5 +36,6 @@ return [
         'alipay_public_key' => env('ALIPAY_PUBLIC_KEY'),
         'app_private_key' => env('APP_PRIVATE_KEY'),
         'merchant_id' => '2088102181099210',
+        'product_code' => 'PRE_AUTH_ONLINE',
     ],
 ];
