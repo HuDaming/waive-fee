@@ -45,11 +45,8 @@ class OrdersController extends Controller
 
         if ($product->trans_currency) $query['trans_currency'] = $product->trans_currency;
         if ($product->settle_currency) $query['settle_currency'] = $product->settle_currency;
-        $query['enable_pay_channels'] = json_encode([
-            ['payChannelType' => 'MONEY_FUND'],
-            ['payChannelType' => 'PCREDIT_PAY'],
-            ['payChannelType' => 'CREDITZHIMA'],
-        ]);
+        // 支付渠道
+        $query['enable_pay_channels'] = $this->getChannelsJson($product->enable_pay_channels);
 
         $result = app('alipay')->authorizedFundsFreezeOrder($query);
         if (empty($result->code) && $result->code == 10000) {
@@ -69,5 +66,21 @@ class OrdersController extends Controller
         } else {
             return response()->json(['code' => $result->code, 'msg' => $result->sub_msg]);
         }
+    }
+
+    /**
+     * 拼接支付渠道
+     *
+     * @param array $channels
+     * @return false|string
+     */
+    protected function getChannelsJson(array $channels = [])
+    {
+        $arr = [];
+        foreach ($channels as $channel) {
+            $arr[] = ['payChannelType' => $channel];
+        }
+
+        return json_encode($arr, true);
     }
 }
