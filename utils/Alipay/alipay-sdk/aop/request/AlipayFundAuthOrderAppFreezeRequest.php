@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.fund.auth.order.app.freeze request
  *
@@ -7,7 +10,7 @@
  */
 class AlipayFundAuthOrderAppFreezeRequest
 {
-	/** 
+	/**
 	 * 线上资金授权冻结接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class AlipayFundAuthOrderAppFreezeRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

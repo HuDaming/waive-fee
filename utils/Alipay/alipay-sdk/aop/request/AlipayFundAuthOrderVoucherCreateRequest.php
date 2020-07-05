@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.fund.auth.order.voucher.create request
  *
@@ -7,7 +10,7 @@
  */
 class AlipayFundAuthOrderVoucherCreateRequest
 {
-	/** 
+	/**
 	 * 资金授权发码接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class AlipayFundAuthOrderVoucherCreateRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

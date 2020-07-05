@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: zhima.auth.info.authquery request
  *
@@ -7,7 +10,7 @@
  */
 class ZhimaAuthInfoAuthqueryRequest
 {
-	/** 
+	/**
 	 * 查询是否授权的接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class ZhimaAuthInfoAuthqueryRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

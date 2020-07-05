@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop;
+
 /**
  * Created by PhpStorm.
  * User: jiehua
@@ -12,4 +15,4 @@ class SignData
 
     public $sign = null;
 
-} 
+}

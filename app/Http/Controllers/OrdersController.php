@@ -26,6 +26,9 @@ class OrdersController extends Controller
 
     public function store(OrderRequest $request)
     {
+        // 查询芝麻信用授权
+        app('alipay')->zhimaAuthInfoQuery();
+
         $user = $request->user();
         $product = $request->product;
         $query = [
@@ -48,7 +51,7 @@ class OrdersController extends Controller
         // 支付渠道
         $query['enable_pay_channels'] = $this->getChannelsJson($product->enable_pay_channels);
 
-        $result = app('alipay')->authorizedFundsFreezeOrder($query);
+        $result = app('alipay')->fundAuthOrderAppFreeze($query);
         if (empty($result->code) && $result->code == 10000) {
             // 成功
             $order = new Order($query + [
