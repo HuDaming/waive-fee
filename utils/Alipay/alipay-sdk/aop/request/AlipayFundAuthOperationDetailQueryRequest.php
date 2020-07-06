@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.fund.auth.operation.detail.query request
  *
@@ -7,7 +10,7 @@
  */
 class AlipayFundAuthOperationDetailQueryRequest
 {
-	/** 
+	/**
 	 * 资金预授权单笔操作明细查询接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class AlipayFundAuthOperationDetailQueryRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

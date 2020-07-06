@@ -236,6 +236,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facade::class,
+        'Alipay' => Utils\Alipay\Facade::class,
 
     ],
 

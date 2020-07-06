@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.fund.auth.operation.cancel request
  *
@@ -7,7 +10,7 @@
  */
 class AlipayFundAuthOperationCancelRequest
 {
-	/** 
+	/**
 	 * 资金预授权明细撤销接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class AlipayFundAuthOperationCancelRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

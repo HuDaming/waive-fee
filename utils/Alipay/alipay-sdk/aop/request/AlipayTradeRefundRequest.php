@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.trade.refund request
  *
@@ -7,7 +10,7 @@
  */
 class AlipayTradeRefundRequest
 {
-	/** 
+	/**
 	 * 统一收单交易退款接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class AlipayTradeRefundRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.fund.auth.order.unfreeze request
  *
@@ -7,7 +10,7 @@
  */
 class AlipayFundAuthOrderUnfreezeRequest
 {
-	/** 
+	/**
 	 * 预授权资金解冻接口
 	 **/
 	private $bizContent;
@@ -21,7 +24,7 @@ class AlipayFundAuthOrderUnfreezeRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function setBizContent($bizContent)
 	{
 		$this->bizContent = $bizContent;

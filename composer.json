@@ -51,7 +51,8 @@
             "database/factories"
         ],
         "files": [
-            "bootstrap/helpers.php"
+            "bootstrap/helpers.php",
+            "utils/Alipay/supports.php"
         ]
     },
     "autoload-dev": {
