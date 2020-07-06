@@ -7,6 +7,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title', '免押系统') - 信用就是金钱</title>
+  @yield('scriptsTitle')
   <!-- 样式 -->
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>

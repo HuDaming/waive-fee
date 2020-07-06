@@ -16,11 +16,11 @@ class AlipayServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('alipay', function ($app) {
-            return new Alipay(config('services.alipay'));
+            return new Alipay();
         });
 
         $this->app->bind(AlipayContract::class, function () {
-            return new Alipay(config('services.alipay'));
+            return new Alipay();
         });
     }
 

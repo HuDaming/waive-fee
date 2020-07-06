@@ -43,14 +43,16 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Utils\\": "utils/"
+            "Utils\\": "utils/",
+            "AlipaySdk\\": "utils/Alipay/alipay-sdk/"
         },
         "classmap": [
             "database/seeds",
             "database/factories"
         ],
         "files": [
-            "bootstrap/helpers.php"
+            "bootstrap/helpers.php",
+            "utils/Alipay/supports.php"
         ]
     },
     "autoload-dev": {

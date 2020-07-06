@@ -1,4 +1,7 @@
 <?php
+
+namespace AlipaySdk\aop\request;
+
 /**
  * ALIPAY API: alipay.user.info.share request
  *
@@ -17,7 +20,7 @@ class AlipayUserInfoShareRequest
 	private $returnUrl;
     private $needEncrypt=false;
 
-	
+
 	public function getApiMethodName()
 	{
 		return "alipay.user.info.share";
